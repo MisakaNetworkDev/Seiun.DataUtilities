@@ -1,0 +1,37 @@
+[
+  {
+    "title": "Chinese universities boost AI.",
+    "desc": "Artificial intelligence (AI) is no longer confined to science and engineering. It has become a general education subject for students across disciplines.",
+    "tag": "AI",
+    "file": "1.md",
+    "cover": "1.jpeg"
+  },
+  {
+    "title": "Traditional raised houses.",
+    "desc": "In southwest China's Yunnan Province, the Dai ethnic group's bamboo houses, also known as \"ganlan\" in Chinese, embody a unique architectural tradition.",
+    "tag": "Tradition",
+    "file": "2.md",
+    "cover": "2.png"
+  },
+  {
+    "title": "The largest organic molecules on Mars",
+    "desc": "NASA's Curiosity rover takes a selfie in the clay-rich Glen Etive crater on Mars",
+    "Tag": "Mars",
+    "file": "3.md",
+    "cover": "3.png"
+  },
+  {
+    "title": "Chinese club wins championship",
+    "desc": "Chinese club EDG wins Valorant 2024 global championship",
+    "tag": "E-Sports",
+    "file": "4.md",
+    "cover": "4.jpeg"
+  },
+  {
+    "title": "China Water Week",
+    "desc": "China Water Week: Strengthening water security with development",
+    "tag": "Nature",
+    "file": "5.md",
+    "cover": "5.jpeg"
+  }
+]

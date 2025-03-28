@@ -1,8 +1,41 @@
+import json
 import os
 import uuid
 import random
 from datetime import datetime, UTC
+
+import openai
+
 from DictCsv import DictCsv
+
+
+# 配置 OpenAI API Key
+secret_file = os.path.join(os.path.dirname(__file__), "secret.json")
+with open(secret_file, "r", encoding="utf-8") as f:
+    secrets = json.load(f)
+OPENAI_API_KEY = secrets.get("openai_api_key")
+client = openai.OpenAI(
+    api_key=OPENAI_API_KEY,
+    base_url="https://api.chatanywhere.tech"
+)
+
+def extract_primary_definition(definition):
+    prompt = (
+        "从以下释义中提取一条主要释义，严格按照'词性 + 主要解释'的格式输出，不要输出其他内容。\n"
+        "示例:\n"
+        "输入：n. 半径, 范围; v. 使成半径状; a. 辐射状的\n"
+        "输出：n. 半径, 范围\n\n"
+        f"输入：{definition}\n"
+        "输出："
+    )
+
+    response = client.chat.completions.create(
+        model="gpt-4-turbo",
+        messages=[{"role": "user", "content": prompt}],
+        max_tokens=50
+    )
+
+    return response.choices[0].message.content.strip()
 
 # 获取词集文件路径
 test_word_set_file = os.path.join(os.path.dirname(__file__), 'data', 'word_sets', 'test.txt')
@@ -37,9 +70,11 @@ for word, word_uuid in word_id_map.items():
     word_text = entry['word'].replace("'", "''")  # 处理单引号
     pronunciation = entry['phonetic'].replace("'", "''") if entry['phonetic'] else ''
     definition = entry['translation'].replace("'", "''")
+    primary_definition = extract_primary_definition(definition).replace("'", "''")
+    print(primary_definition)
 
-    sql = f"""INSERT INTO "Words" ("Id", "WordText", "Pronunciation", "Definition", "CreatedAt", "UpdatedAt") 
-              VALUES ('{word_uuid}', '{word_text}', '{pronunciation}', '{definition}', '{current_time}', '{current_time}');"""
+    sql = f"""INSERT INTO "Words" ("Id", "WordText", "Pronunciation", "Definition", "PrimaryDefinition", "ExampleSentence", "CreatedAt", "UpdatedAt") 
+              VALUES ('{word_uuid}', '{word_text}', '{pronunciation}', '{definition}', '{primary_definition}', '', '{current_time}', '{current_time}');"""
 
     words_sql_statements.append(sql)
 
